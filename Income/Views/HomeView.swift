@@ -4,11 +4,19 @@
 //
 //
 
+// 1. Create the Model
+// 2. Create the Model Container
+// 3. Create Data
+
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     
     @State private var transactions: [Transaction] = []
+    
+    @Query var transactionsSwiftData: [TransactionModel]
+    
     @State private var showAddTransactionView = false
     @State private var transactionToEdit: Transaction?
     
@@ -25,8 +33,8 @@ struct HomeView: View {
         return numberFormatter
     }
     
-    private var displayTransactions: [Transaction] {
-        let sortedTransactions = orderDescending ? transactions.sorted(by: { $0.date < $1.date }) : transactions.sorted(by: { $0.date > $1.date })
+    private var displayTransactions: [TransactionModel] {
+        let sortedTransactions = orderDescending ? transactionsSwiftData.sorted(by: { $0.date < $1.date }) : transactionsSwiftData.sorted(by: { $0.date > $1.date })
         guard filterMinimum > 0 else {
             return sortedTransactions
         }
@@ -35,18 +43,18 @@ struct HomeView: View {
     }
     
     private var expenses: String {
-        let sumExpenses = transactions.filter({ $0.type == .expense }).reduce(0, { $0 + $1.amount })
+        let sumExpenses = transactionsSwiftData.filter({ $0.type == .expense }).reduce(0, { $0 + $1.amount })
         return numberFormatter.string(from: sumExpenses as NSNumber) ?? "$US0.00"
     }
     
     private var income: String {
-        let sumIncome = transactions.filter({ $0.type == .income }).reduce(0, { $0 + $1.amount })
+        let sumIncome = transactionsSwiftData.filter({ $0.type == .income }).reduce(0, { $0 + $1.amount })
         return numberFormatter.string(from: sumIncome as NSNumber) ?? "$US0.00"
     }
     
     private var total: String {
-        let sumExpenses = transactions.filter({ $0.type == .expense }).reduce(0, { $0 + $1.amount })
-        let sumIncome = transactions.filter({ $0.type == .income }).reduce(0, { $0 + $1.amount })
+        let sumExpenses = transactionsSwiftData.filter({ $0.type == .expense }).reduce(0, { $0 + $1.amount })
+        let sumIncome = transactionsSwiftData.filter({ $0.type == .income }).reduce(0, { $0 + $1.amount })
         let total = sumIncome - sumExpenses
         return numberFormatter.string(from: total as NSNumber) ?? "$US0.00"
     }
@@ -121,12 +129,15 @@ struct HomeView: View {
                     BalanceView()
                     List {
                         ForEach(displayTransactions) { transaction in
-                            Button(action: {
-                                transactionToEdit = transaction
-                            }, label: {
-                                TransactionView(transaction: transaction)
-                                    .foregroundStyle(.black)
-                            })
+                            TransactionView(transaction: transaction)
+                                .foregroundStyle(.black)
+                            
+//                            Button(action: {
+//                                transactionToEdit = transaction
+//                            }, label: {
+//                                TransactionView(transaction: transaction)
+//                                    .foregroundStyle(.black)
+//                            })
                         }
                         .onDelete(perform: delete)
                     }

@@ -5,6 +5,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddTransactionView: View {
     @State private var amount = 0.0
@@ -16,6 +17,7 @@ struct AddTransactionView: View {
     @Binding var transactions: [Transaction]
     var transactionToEdit: Transaction?
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var context
     
     @AppStorage("currency") var currency = Currency.usd
     
@@ -57,7 +59,7 @@ struct AddTransactionView: View {
                 //correction here. When editing the last date should be used
 //                let transaction = Transaction(title: transactionTitle, type: selectedTransactionType, amount: amount, date: Date())
                 
-                if let transactionToEdit = transactionToEdit {
+                if let transactionToEdit {
                     guard let indexOfTransaction = transactions.firstIndex(of: transactionToEdit) else {
                         alertTitle = "Something went wrong"
                         alertMessage = "Cannot update this transaction right now."
@@ -67,8 +69,8 @@ struct AddTransactionView: View {
                     let transaction = Transaction(title: transactionTitle, type: selectedTransactionType, amount: amount, date: transactionToEdit.date)
                     transactions[indexOfTransaction] = transaction
                 } else {
-                    let transaction = Transaction(title: transactionTitle, type: selectedTransactionType, amount: amount, date: Date())
-                    transactions.append(transaction)
+                    let transaction = TransactionModel(id: UUID(), title: transactionTitle, type: selectedTransactionType, amount: amount, date: Date())
+                    context.insert(transaction)
                 }
                 
                 dismiss()
