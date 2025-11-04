@@ -10,11 +10,11 @@ import SwiftData
 
 @Model class TransactionModel {
     
-    var id: UUID
+    let id: UUID
     var title: String
     var type: TransactionType
     var amount: Double
-    var date: Date
+    let date: Date
     
     init(id: UUID, title: String, type: TransactionType, amount: Double, date: Date) {
         self.id = id

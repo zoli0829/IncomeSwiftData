@@ -18,7 +18,7 @@ struct HomeView: View {
     @Query var transactionsSwiftData: [TransactionModel]
     
     @State private var showAddTransactionView = false
-    @State private var transactionToEdit: Transaction?
+    @State private var transactionToEdit: TransactionModel?
     
     @State private var showSettings = false
     
@@ -129,15 +129,12 @@ struct HomeView: View {
                     BalanceView()
                     List {
                         ForEach(displayTransactions) { transaction in
-                            TransactionView(transaction: transaction)
-                                .foregroundStyle(.black)
-                            
-//                            Button(action: {
-//                                transactionToEdit = transaction
-//                            }, label: {
-//                                TransactionView(transaction: transaction)
-//                                    .foregroundStyle(.black)
-//                            })
+                            Button(action: {
+                                transactionToEdit = transaction
+                            }, label: {
+                                TransactionView(transaction: transaction)
+                                    .foregroundStyle(.black)
+                            })
                         }
                         .onDelete(perform: delete)
                     }
