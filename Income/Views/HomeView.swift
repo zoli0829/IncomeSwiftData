@@ -175,7 +175,9 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    let previewContainer = PreviewHelper.previewContainer
+    return HomeView()
+        .modelContainer(previewContainer)
 }
 
 

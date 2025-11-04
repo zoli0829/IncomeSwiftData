@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -34,6 +34,10 @@
 		20FB862B2B6921BD00E430BE /* TransactionTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTypeModel.swift; sourceTree = "<group>"; };
 		20FB862D2B69285F00E430BE /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		C26BAD7C2EBA88490061EB31 /* Helper */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Helper; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		20FB86142B691FE700E430BE /* Frameworks */ = {
@@ -76,6 +80,7 @@
 		20FB86192B691FE700E430BE /* Income */ = {
 			isa = PBXGroup;
 			children = (
+				C26BAD7C2EBA88490061EB31 /* Helper */,
 				206DB8A72B6A6B820076400A /* Views */,
 				20FB86282B69212200E430BE /* Model */,
 				20FB861A2B691FE700E430BE /* IncomeApp.swift */,
@@ -118,6 +123,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C26BAD7C2EBA88490061EB31 /* Helper */,
 			);
 			name = Income;
 			productName = Income;

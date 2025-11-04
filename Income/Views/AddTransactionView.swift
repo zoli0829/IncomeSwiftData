@@ -105,5 +105,7 @@ struct AddTransactionView: View {
 }
 
 #Preview {
-    AddTransactionView()
+    let previewContainer = PreviewHelper.previewContainer
+    return AddTransactionView()
+        .modelContainer(previewContainer)
 }
