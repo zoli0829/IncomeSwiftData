@@ -26,6 +26,8 @@ struct HomeView: View {
     @AppStorage("filterMinimum") var filterMinimum = 0.0
     @AppStorage("currency") var currency = Currency.usd
     
+    @Environment(\.modelContext) var context
+    
     private var numberFormatter: NumberFormatter {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .currency
@@ -166,7 +168,10 @@ struct HomeView: View {
     }
     
     private func delete(at offsets: IndexSet) {
-        transactions.remove(atOffsets: offsets)
+        for index in offsets {
+            let transactionToDelete = transactionsSwiftData[index]
+            context.delete(transactionToDelete)
+        }
     }
     
 }
