@@ -13,9 +13,7 @@ import SwiftData
 
 struct HomeView: View {
     
-    @State private var transactions: [Transaction] = []
-    
-    @Query var transactionsSwiftData: [TransactionModel]
+    @Query var transactions: [TransactionModel]
     
     @State private var showAddTransactionView = false
     @State private var transactionToEdit: TransactionModel?
@@ -36,7 +34,7 @@ struct HomeView: View {
     }
     
     private var displayTransactions: [TransactionModel] {
-        let sortedTransactions = orderDescending ? transactionsSwiftData.sorted(by: { $0.date < $1.date }) : transactionsSwiftData.sorted(by: { $0.date > $1.date })
+        let sortedTransactions = orderDescending ? transactions.sorted(by: { $0.date < $1.date }) : transactions.sorted(by: { $0.date > $1.date })
         guard filterMinimum > 0 else {
             return sortedTransactions
         }
@@ -45,18 +43,18 @@ struct HomeView: View {
     }
     
     private var expenses: String {
-        let sumExpenses = transactionsSwiftData.filter({ $0.type == .expense }).reduce(0, { $0 + $1.amount })
+        let sumExpenses = transactions.filter({ $0.type == .expense }).reduce(0, { $0 + $1.amount })
         return numberFormatter.string(from: sumExpenses as NSNumber) ?? "$US0.00"
     }
     
     private var income: String {
-        let sumIncome = transactionsSwiftData.filter({ $0.type == .income }).reduce(0, { $0 + $1.amount })
+        let sumIncome = transactions.filter({ $0.type == .income }).reduce(0, { $0 + $1.amount })
         return numberFormatter.string(from: sumIncome as NSNumber) ?? "$US0.00"
     }
     
     private var total: String {
-        let sumExpenses = transactionsSwiftData.filter({ $0.type == .expense }).reduce(0, { $0 + $1.amount })
-        let sumIncome = transactionsSwiftData.filter({ $0.type == .income }).reduce(0, { $0 + $1.amount })
+        let sumExpenses = transactions.filter({ $0.type == .expense }).reduce(0, { $0 + $1.amount })
+        let sumIncome = transactions.filter({ $0.type == .income }).reduce(0, { $0 + $1.amount })
         let total = sumIncome - sumExpenses
         return numberFormatter.string(from: total as NSNumber) ?? "$US0.00"
     }
@@ -65,7 +63,7 @@ struct HomeView: View {
         VStack {
             Spacer()
             NavigationLink {
-                AddTransactionView(transactions: $transactions)
+                AddTransactionView()
             } label: {
                 Text("+")
                     .font(.largeTitle)
@@ -149,10 +147,10 @@ struct HomeView: View {
             })
             .navigationTitle("Income")
             .navigationDestination(item: $transactionToEdit, destination: { transactionToEdit in
-                AddTransactionView(transactions: $transactions, transactionToEdit: transactionToEdit)
+                AddTransactionView(transactionToEdit: transactionToEdit)
             })
             .navigationDestination(isPresented: $showAddTransactionView, destination: {
-                AddTransactionView(transactions: $transactions)
+                AddTransactionView()
             })
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -169,7 +167,7 @@ struct HomeView: View {
     
     private func delete(at offsets: IndexSet) {
         for index in offsets {
-            let transactionToDelete = transactionsSwiftData[index]
+            let transactionToDelete = transactions[index]
             context.delete(transactionToDelete)
         }
     }
